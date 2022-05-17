@@ -57,12 +57,12 @@ int DescribeCustomizedErrno(
         if (rc != EINVAL)
 #else
         desc = strerror_r(error_code, tls_error_buf, ERROR_BUFSIZE);
-        if (desc && strncmp(desc, "Unknown error", 13) != 0)
+        if (desc != tls_error_buf)
 #endif
         {
             fprintf(stderr, "Fail to define %s(%d) which is already defined as `%s', abort.",
                     error_name, error_code, desc);
-            _exit(1);
+            // _exit(1);
         }
     }
     errno_desc[error_code - ERRNO_BEGIN] = description;
