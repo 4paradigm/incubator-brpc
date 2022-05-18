@@ -60,9 +60,9 @@ int DescribeCustomizedErrno(
         if (desc != tls_error_buf)
 #endif
         {
-            fprintf(stderr, "Fail to define %s(%d) which is already defined as `%s', abort.",
-                    error_name, error_code, desc);
-            // _exit(1);
+          fprintf(stderr,
+                  "%d is defined as `%s', probably is the system errno.\n",
+                  error_code, desc);
         }
     }
     errno_desc[error_code - ERRNO_BEGIN] = description;
