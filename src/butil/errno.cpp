@@ -54,16 +54,19 @@ int DescribeCustomizedErrno(
     } else {
 #if defined(OS_MACOSX)
         const int rc = strerror_r(error_code, tls_error_buf, ERROR_BUFSIZE);
-        if (rc != EINVAL)
+        if (rc != EINVAL) {
+            fprintf(stderr, "Fail to define %s(%d) which is already defined as `%s', abort.",
+                    error_name, error_code, desc);
+            _exit(1);
+        }
 #else
         desc = strerror_r(error_code, tls_error_buf, ERROR_BUFSIZE);
-        if (desc != tls_error_buf)
-#endif
-        {
+        if (desc != tls_error_buf) {
           fprintf(stderr,
                   "%d is defined as `%s', probably is the system errno.\n",
                   error_code, desc);
         }
+#endif
     }
     errno_desc[error_code - ERRNO_BEGIN] = description;
     return 0;  // must
